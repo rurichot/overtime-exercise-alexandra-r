@@ -6,7 +6,7 @@ Your application should:
 - Allow a user to search in their books by title.
 - If you have additional time, allow a user to update fields for an existing book.
 
-This isn’t a design exercise, but I would like to see a modern library like Bootstrap, Chakra, Tailwind, etc. implemented to make it look a little nice, and definitely follow UX best practices to make the app usable. Data should persist across page reloads, but you can use local storage, i.e., no need to spin up a server or use a database.
+This isn’t a design exercise, but I would like to see a modern library like Bootstrap, Chakra, Tailwind, etc. implemented to make it look a little nice, and definitely follow UX best practices to make the app usable. **Data should persist across page reloads**, but you can use local storage, i.e., no need to spin up a server or use a database.
 
 If you have any questions or would like me to hop on the GitPod session with you please let me know! 
 
