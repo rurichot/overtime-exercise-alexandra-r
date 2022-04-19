@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 export default function AddNewBook({ onChange, addNewBookEvent, onImageChange }) {
 
     const [imageURL, setImageURL] = useState("");
+
     const handleChange = useCallback(e => {
         onChange(e);
     }, [onChange]);
@@ -12,51 +13,69 @@ export default function AddNewBook({ onChange, addNewBookEvent, onImageChange })
     }, [addNewBookEvent]);
 
     const handleImageChange = useCallback(e => {
-        setImageURL(e.target.files[0].name);
+        setImageURL(e.target.result);
         onImageChange(e);
     }, [onImageChange]);
 
+    const handleFileSelect = (event) => {
+        var file = event.target.files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = (function (theFile) {
+            return function (e) {
+                setImageURL(e.target.result); //set to display image
+                handleImageChange(e);
+            };
+        })(file);
+
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(file);
+    }
+
     return (
-        <div className='border border-white'>
+        <div className='border border-gray-300 w-full'>
             {/* Add New Book */}
-            <div className='grid grid-cols-3 p-6 gap-6'>
-                <div className='text-center h-full bg-gray-700 flex content-around flex-wrap'>
-                    <div className="block w-full margin-auto ">
-                        <input id="fileUpload" name="bookCoverImage" type="file" accept="image/*" onChange={handleImageChange} hidden />
-                        <label htmlFor="fileUpload" className='text-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-fit" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className='sm:grid sm:grid-cols-3 sm:gap-6 p-6'>
+                <div className='text-center sm:h-full sm:bg-gray-200 flex content-around flex-wrap p-4'>
+                    <div className="block w-full margin-auto sm:h-56">
+                        <input id="fileUpload" name="bookCoverImage" type="file" accept="image/*" onChange={handleFileSelect} hidden />
+                        {imageURL.length > 0 &&
+                            <img className="sm:h-full md:h-48 lg:h-56 h-32 max-h-full max-w-full m-auto" src={imageURL} />
+                        }
+                    </div>
+                    <div className="p-2 text-center block w-full">
+                        <label htmlFor="fileUpload" className="cursor-pointer btn-primary inline-flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="md:hidden lg:inline-block h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                             </svg>
+                            <span>Add Cover Image</span>
                         </label>
-                    </div>
-                    <div class="p-2 text-center block w-full">
-                        {imageURL}
-                        <label className="block align-baseline text-sm">Add Cover Image</label>
                     </div>
                 </div>
                 <div className='text-left col-span-2'>
-                    <div className='my-5'>
-                        <label className="block text-gray-700 text-sm font-bold mb-2 uppercase" for="bookTitle">
+                    <div className='mb-5'>
+                        <label className="form-label" htmlFor="bookTitle">
                             Book Title
                         </label>
-                        <input id="bookTitle" type="text" placeholder="Title" name="bookTitle" onChange={handleChange}
-                            className="text-base appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <input id="bookTitle" type="text" placeholder="Title" name="bookTitle" onChange={handleChange} className="input-primary" />
                     </div>
                     <div className='my-5'>
-                        <label className="block text-gray-700 text-sm font-bold mb-2 uppercase" for="bookAuthor">
+                        <label className="form-label" htmlFor="bookAuthor">
                             Author
                         </label>
-                        <input id="bookAuthor" type="text" placeholder="Author" name="bookAuthor" onChange={handleChange}
-                            className="text-base appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <input id="bookAuthor" type="text" placeholder="Author" name="bookAuthor" onChange={handleChange} className="input-primary" />
                     </div>
                     <div className='my-5'>
-                        <label className="block text-gray-700 text-sm font-bold mb-2 uppercase" for="bookISBN">
+                        <label className="form-label" htmlFor="bookISBN">
                             ISBN
                         </label>
-                        <input name="bookISBN" className='text-black border rounded' onChange={handleChange} />
+                        <input id="bookISBN" type="text" placeholder="ISBN" name="bookISBN" onChange={handleChange} className="input-primary" />
                     </div>
-                    <div>
-                    <button className='m-auto' onClick={addNewBook}>Add New Book</button>
+                    <div className='m-auto text-center'>
+                        <button className='w-full btn-primary' onClick={addNewBook}>
+                            Add New Book
+                        </button>
                     </div>
                 </div>
             </div>

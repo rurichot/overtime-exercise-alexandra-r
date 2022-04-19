@@ -1,6 +1,7 @@
 import React from "react";
 import MyLibrary from "./myLibrary";
 import AddNewBook from "./add-new-book";
+import { v4 as uuid } from 'uuid';
 
 export class RenderLibrary extends React.Component {
 
@@ -28,16 +29,18 @@ export class RenderLibrary extends React.Component {
     }
 
     handleImageChange = (e) => {
-        const file = e.target.files[0];
-        this.setState({ bookCoverImage: file.name });
+        this.setState({ bookCoverImage: e.target.result });
     }
 
     addNewBook = (e) => {
         e.preventDefault();
         if (this.state.bookTitle.length === 0) {
-            return; //TODO: add error display?
+            return;
         }
+        const unique_id = uuid();
+
         const newBook = {
+            id: unique_id,
             title: this.state.bookTitle,
             author: this.state.bookAuthor,
             isbn: this.state.bookISBN,
@@ -66,16 +69,15 @@ export class RenderLibrary extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="w-full">
                 {/* Add New Book */}
                 <AddNewBook onChange={this.handleChange} addNewBookEvent={this.addNewBook} onImageChange={this.handleImageChange} />
 
                 {/* Search */}
-
                 <div className="flex items-center border-b border-teal-500 py-2 my-10">
-                    <input name="searchInput" onChange={this.handleChange}
-                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Search Book Titles..." aria-label="Full name" />
-                    <button onClick={this.searchLibrary} className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+                    <input name="searchInput" onChange={this.handleChange}  type="text" placeholder="Search Book Titles..." aria-label="Search Input" 
+                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"/>
+                    <button onClick={this.searchLibrary} className="btn-primary" type="button">
                         Search
                     </button>
                 </div>
