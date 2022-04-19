@@ -71,8 +71,14 @@ export class RenderLibrary extends React.Component {
                 <AddNewBook onChange={this.handleChange} addNewBookEvent={this.addNewBook} onImageChange={this.handleImageChange} />
 
                 {/* Search */}
-                <input placeholder="Search Book Titles..." type="search" name="searchInput" onChange={this.handleChange} />
-                <button onClick={this.searchLibrary}>Search</button>
+
+                <div className="flex items-center border-b border-teal-500 py-2 my-10">
+                    <input name="searchInput" onChange={this.handleChange}
+                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Search Book Titles..." aria-label="Full name" />
+                    <button onClick={this.searchLibrary} className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+                        Search
+                    </button>
+                </div>
 
                 {/* Display Library */}
                 <MyLibrary books={this.state.filteredLibrary} />
