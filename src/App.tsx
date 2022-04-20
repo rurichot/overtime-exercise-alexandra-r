@@ -13,7 +13,7 @@ function App() {
           My Library
         </h1>
 
-        <div className="sm:max-w-xl sm:w-6/12 md:max-w-3xl sm:w-3/4 mx-5">
+        <div className="sm:max-w-xl md:max-w-3xl sm:w-3/4 mx-5">
           <RenderLibrary />
         </div>
       </header>

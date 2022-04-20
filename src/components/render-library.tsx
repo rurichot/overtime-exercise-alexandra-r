@@ -3,9 +3,28 @@ import MyLibrary from "./myLibrary";
 import AddNewBook from "./add-new-book";
 import { v4 as uuid } from 'uuid';
 
+export interface Book {
+    id: string;
+    title: string;
+    author: string;
+    isbn: string;
+    coverImage: string;
+}
+
+interface BookState extends Partial<Book> {
+    myLibrary: any[];
+    filteredLibrary: any[];
+    bookTitle: string;
+    bookAuthor: string;
+    bookISBN: string;
+    bookCoverImage: string;
+    searchInput: string;
+    errorMessage: string;
+}
+
 export class RenderLibrary extends React.Component {
 
-    state = {
+    state: BookState = {
         myLibrary: [], //load My Library from local storage
         filteredLibrary: [],
         bookTitle: "",
@@ -18,28 +37,28 @@ export class RenderLibrary extends React.Component {
 
     // load My Library 
     componentDidMount = () => {
-        const myLibrary = JSON.parse(localStorage.getItem("myLibrary")) ? JSON.parse(localStorage.getItem("myLibrary")) : [];
+        const myLibrary = JSON.parse(localStorage.getItem("myLibrary") ?? '[]');
         const filteredLibrary = myLibrary;
         this.setState({ myLibrary, filteredLibrary });
     }
 
-    handleChange = (e) => {
+    handleChange = (e: any) => {
         const input = e.target;
         this.setState({ [input.name]: input.value });
     }
 
-    handleImageChange = (e) => {
+    handleImageChange = (e: any) => {
         this.setState({ bookCoverImage: e.target.result });
     }
 
-    addNewBook = (e) => {
+    addNewBook = (e: any) => {
         e.preventDefault();
         if (this.state.bookTitle.length === 0) {
             return;
         }
         const unique_id = uuid();
 
-        const newBook = {
+        const newBook: Book = {
             id: unique_id,
             title: this.state.bookTitle,
             author: this.state.bookAuthor,
@@ -55,7 +74,7 @@ export class RenderLibrary extends React.Component {
         });
     }
 
-    searchLibrary = (e) => {
+    searchLibrary = () => {
         const filteredLibrary =
             this.state.myLibrary.filter(
                 book => {
@@ -75,8 +94,8 @@ export class RenderLibrary extends React.Component {
 
                 {/* Search */}
                 <div className="flex items-center border-b border-teal-500 py-2 my-10">
-                    <input name="searchInput" onChange={this.handleChange}  type="text" placeholder="Search Book Titles..." aria-label="Search Input" 
-                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"/>
+                    <input name="searchInput" onChange={this.handleChange} type="text" placeholder="Search Book Titles..." aria-label="Search Input"
+                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
                     <button onClick={this.searchLibrary} className="btn-primary" type="button">
                         Search
                     </button>

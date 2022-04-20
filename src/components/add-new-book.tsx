@@ -1,29 +1,41 @@
-import { useCallback, useState } from 'react'
+import React, { ChangeEvent, ReactElement, useCallback, useState } from 'react'
 
-export default function AddNewBook({ onChange, addNewBookEvent, onImageChange }) {
+import type { Book } from './render-library'
+
+interface BookProps {
+    onChange: (value: ChangeEvent<HTMLElement>) => void;
+    addNewBookEvent: (value: React.MouseEvent<Element>) => void;
+    onImageChange: (value: {
+        target: {
+            result: React.SetStateAction<string>;
+        };
+    }) => void;
+}
+
+export default function AddNewBook({ onChange, addNewBookEvent, onImageChange }: BookProps): ReactElement<Book> {
 
     const [imageURL, setImageURL] = useState("");
 
-    const handleChange = useCallback(e => {
+    const handleChange = useCallback((e: ChangeEvent<HTMLElement>) => {
         onChange(e);
     }, [onChange]);
 
-    const addNewBook = useCallback(e => {
+    const addNewBook = useCallback((e: React.MouseEvent<Element>) => {
         addNewBookEvent(e);
     }, [addNewBookEvent]);
 
-    const handleImageChange = useCallback(e => {
+    const handleImageChange = useCallback((e: { target: { result: React.SetStateAction<string>; }; }) => {
         setImageURL(e.target.result);
         onImageChange(e);
     }, [onImageChange]);
 
-    const handleFileSelect = (event) => {
-        var file = event.target.files[0];
+    const handleFileSelect = (event: any) => {
+        let file = event.target.files[0];
 
-        var reader = new FileReader();
+        let reader = new FileReader();
 
         reader.onload = (function (theFile) {
-            return function (e) {
+            return function (e: any) {
                 setImageURL(e.target.result); //set to display image
                 handleImageChange(e);
             };
